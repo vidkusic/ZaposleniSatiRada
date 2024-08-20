@@ -18,7 +18,9 @@ namespace ZaposleniRadniSati.Managers
             {
                 HttpResponseMessage response = await klijent.GetAsync(apiUrl);
                 response.EnsureSuccessStatusCode();
+
                 string jsonResponse = await response.Content.ReadAsStringAsync();
+
                 var vreme = JsonConvert.DeserializeObject<List<Zaposleni>>(jsonResponse);
 
                 var employeeTotalHours = vreme
