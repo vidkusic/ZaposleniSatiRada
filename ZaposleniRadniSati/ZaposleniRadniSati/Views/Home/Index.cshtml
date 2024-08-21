@@ -7,44 +7,62 @@
 <head>
     <title>Zaposleni i radni sati</title>
     <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .table-container {
+            margin-right: 50px;
+        }
+
         table {
-            width: 50%;
             border-collapse: collapse;
-            margin: 25px 0;
             font-size: 18px;
             text-align: left;
-            margin-left: auto;
-            margin-right: auto;
         }
+
         table, th, td {
             border: 1px solid black;
         }
+
         th, td {
             padding: 12px 15px;
         }
-        /* tr:nth-child(even) {
-            background-color: #f2f2f2;
-        } */
+
         .low-hours {
             background-color: lightcoral;
         }
     </style>
 </head>
 <body>
-    <h1 style="margin-top: 10px; display: flex; justify-content: center">Zaposleni i radni sati</h1>
-    <table>
-        <tr>
-            <th>Ime</th>
-            <th>Broj radnih sati</th>
-        </tr>
-        @foreach (var zaposleni in Model)
-        {
-            string rowClass = zaposleni.RadniSati < 100.00 ? "low-hours" : "";
-            <tr class="@rowClass">
-                <td>@zaposleni.Ime</td>
-                <td>@zaposleni.RadniSati.ToString("0")</td>
-            </tr>
-        }
-    </table>
-</body>
+    <h1 style="text-align: center; margin-top: 10px;">Zaposleni i radni sati</h1>
 
+    <div class="container">
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th>Ime</th>
+                    <th>Broj radnih sati</th>
+                </tr>
+                @foreach (var zaposleni in Model)
+                {
+                    if (string.IsNullOrEmpty(zaposleni.Ime))
+                    {
+                        continue;
+                    }
+                    string rowClass = zaposleni.RadniSati < 100.00 ? "low-hours" : "";
+                    <tr class="@rowClass">
+                        <td>@zaposleni.Ime</td>
+                        <td>@zaposleni.RadniSati.ToString("0")</td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <div>
+            <img src="@ViewBag.PieChartPath" alt="Pie Chart" style="max-width: 600px;" />
+        </div>
+    </div>
+</body>

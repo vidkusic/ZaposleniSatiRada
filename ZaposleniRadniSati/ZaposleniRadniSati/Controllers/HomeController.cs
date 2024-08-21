@@ -21,6 +21,15 @@ namespace ZaposleniRadniSati.Controllers
         {
             var zaposleni = await zaposleniManager.GetZaposleniAsync();
             var zaposleniPoRedu = zaposleni.OrderByDescending(e => e.RadniSati).ToList();
+
+            var employee = zaposleniPoRedu
+                .Where(e => !string.IsNullOrEmpty(e.Ime))
+                .ToDictionary(e => e.Ime, e => e.RadniSati);
+
+            string outputPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "piechart.png");
+            zaposleniManager.GeneratePieChart(employee, outputPath);
+
+            ViewBag.PieChartPath = "/piechart.png";
             return View(zaposleniPoRedu);
         }
 
